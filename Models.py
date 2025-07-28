@@ -54,7 +54,7 @@ class dce_loss(torch.nn.Module):
         super(dce_loss, self).__init__()
         self.n_classes=n_classes
         self.feat_dim=feat_dim
-        self.centers=nn.Parameter(torch.randn(self.feat_dim,self.n_classes).cuda(),requires_grad=True)
+        self.centers=nn.Parameter(torch.randn(self.feat_dim,self.n_classes),requires_grad=True)
         if init_weight:
             self.__init_weight()
 

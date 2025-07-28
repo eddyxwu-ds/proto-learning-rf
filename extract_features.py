@@ -56,7 +56,7 @@ test_num = test_x.shape[0]
 
 
 dataset_test=LoadDataset(test_x,test_y)
-test_loader = torch.utils.data.DataLoader(dataset_test, batch_size=1, shuffle=False, num_workers=1)
+test_loader = torch.utils.data.DataLoader(dataset_test, batch_size=1, shuffle=False, num_workers=0)
 dataset_test_len=1.0*len(dataset_test)
 
 
@@ -64,8 +64,8 @@ model=Net(2,10,2)
 def copy_data(m, i, o):
         my_embedding.copy_(o)
 
-model = torch.load('final_model.pt')
-model= model.cuda()
+model = torch.load('best_model.pt', weights_only=False)
+# model= model.cuda()  # Commented out for CPU-only execution
 print(model)
 layer = model._modules.get('ip1')
 extracted_features=[]
@@ -81,7 +81,7 @@ for (image, label,)  in test_loader:
     def copy_data(m, i, o):
         my_embedding.copy_(o)
     h = layer.register_forward_hook(copy_data)
-    image, label = Variable(image.cuda(),volatile=True), Variable(label.cuda(1))      
+    image, label = Variable(image), Variable(label)      
     test_outputs= model(image)
     h.remove()
     my_embedding=my_embedding.squeeze(0)

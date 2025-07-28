@@ -12,7 +12,6 @@ import torchvision
 import numpy as np
 import torch.utils.data as data_utils
 import torch.nn.functional as F
-from data_utils import *
 from Models import *
 
 
@@ -58,7 +57,7 @@ def train_model(cnn,optimizer_s,lrate,num_epochs,reg, train_loader,test_loader,d
 
  
    
-                image,label = Variable(image.cuda(),requires_grad=True),Variable(label.cuda(),requires_grad=False)
+                image,label = Variable(image,requires_grad=True),Variable(label,requires_grad=False)
                
                 optimizer.zero_grad()
 
@@ -101,7 +100,7 @@ def train_model(cnn,optimizer_s,lrate,num_epochs,reg, train_loader,test_loader,d
         for image, label in test_loader:
            
             with torch.no_grad():
-                image, label = Variable(image.cuda()), Variable(label.cuda())
+                image, label = Variable(image), Variable(label)
                 
                 features, centers,distance,test_outputs = cnn(image)
                 _, predicted_test = torch.max(distance, 1)
@@ -137,8 +136,8 @@ def train_model(cnn,optimizer_s,lrate,num_epochs,reg, train_loader,test_loader,d
         print('*' * 70)
        
         
-        plots(epochs, train_acc, test_acc, train_loss, test_loss,plotsFileName)
-        write_csv(csvFileName, train_acc,test_acc,train_loss,test_loss,epoch)
+        # plots(epochs, train_acc, test_acc, train_loss, test_loss,plotsFileName)
+        # write_csv(csvFileName, train_acc,test_acc,train_loss,test_loss,epoch)
         
     
     torch.save(cnn, 'final_model.pt')    

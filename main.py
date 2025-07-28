@@ -67,17 +67,17 @@ if __name__ == '__main__':
 
 
     dataset_train=LoadDataset(train_x,train_y)
-    train_loader = torch.utils.data.DataLoader(dataset_train, batch_size=args.batch_size, shuffle=True, num_workers=1)
+    train_loader = torch.utils.data.DataLoader(dataset_train, batch_size=args.batch_size, shuffle=True, num_workers=0)
 
     dataset_test=LoadDataset(test_x,test_y)
-    test_loader = torch.utils.data.DataLoader(dataset_test, batch_size=args.batch_size, shuffle=False, num_workers=1)
+    test_loader = torch.utils.data.DataLoader(dataset_test, batch_size=args.batch_size, shuffle=False, num_workers=0)
 
     dataset_test_len=1.0*len(dataset_test)
     dataset_train_len=1.0*len(dataset_train)
 
 
     model=Net(args.h, args.num_classes, args.scale)
-    model = model.cuda()
+    # model = model.cuda()  # Commented out for CPU-only execution
 
     lrate=args.lr  
     optimizer_s = optim.SGD(model.parameters(), lr=lrate, momentum=0.9, weight_decay=1e-4)
